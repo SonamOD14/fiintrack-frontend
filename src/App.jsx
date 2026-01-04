@@ -26,6 +26,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Register from "./pages/register";
 import { Toaster } from "react-hot-toast";
+import Footers from "./components/Footers";
+import Dashboard from "./pages/Dashboard";
 
 
 function App() {
@@ -37,6 +39,7 @@ function App() {
         <Route path="/login" element={<div>login</div>} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<div>contact</div>} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Footers/>
     </Router>

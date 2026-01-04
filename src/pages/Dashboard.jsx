@@ -30,11 +30,11 @@ export default function ExpenseVaultDashboard() {
   const currentPoints = expenses.map((exp, i) => getPoint(i, exp.current));
   const previousPoints = expenses.map((exp, i) => getPoint(i, exp.previous));
 
-  const currentPath = currentPoints.map((p, i) => 
+  const currentPath = currentPoints.map((p, i) =>
     `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`
   ).join(' ') + ' Z';
 
-  const previousPath = previousPoints.map((p, i) => 
+  const previousPath = previousPoints.map((p, i) =>
     `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`
   ).join(' ') + ' Z';
 
@@ -62,14 +62,14 @@ export default function ExpenseVaultDashboard() {
             </div>
             <h1 className="text-3xl font-bold text-white">ExpenseVault</h1>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <button className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors">
               <Bell className="text-white" size={24} />
             </button>
             <div className="flex items-center gap-3 bg-white/10 rounded-full pr-4 pl-2 py-2">
-              <img 
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" 
+              <img
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop"
                 alt="Alex Morgan"
                 className="w-10 h-10 rounded-full object-cover"
               />
@@ -139,7 +139,7 @@ export default function ExpenseVaultDashboard() {
           {/* Radar Chart */}
           <div className="lg:col-span-2 bg-gradient-to-br from-purple-800/40 to-indigo-900/40 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20">
             <h3 className="text-2xl font-bold text-white mb-6">Expense Categories Radar</h3>
-            
+
             <div className="flex items-center justify-center gap-6 mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-12 h-3 bg-purple-500 rounded"></div>
@@ -252,7 +252,7 @@ export default function ExpenseVaultDashboard() {
           {/* Quick Actions */}
           <div className="bg-gradient-to-br from-purple-800/40 to-indigo-900/40 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20">
             <h3 className="text-2xl font-bold text-white mb-6">Quick Actions</h3>
-            
+
             <div className="space-y-4">
               <button className="w-full py-4 bg-gradient-to-r from-blue-500 to-pink-500 rounded-xl text-white font-semibold text-lg hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2">
                 <Plus size={24} />
