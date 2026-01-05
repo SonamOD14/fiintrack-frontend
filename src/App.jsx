@@ -28,6 +28,7 @@ import Register from "./pages/register";
 import { Toaster } from "react-hot-toast";
 import Footers from "./components/Footers";
 import Dashboard from "./pages/Dashboard";
+import Signin from "./pages/Signin";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<div>contact</div>} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/signin" element={<Signin />} />
       </Routes>
       <Footers/>
     </Router>
