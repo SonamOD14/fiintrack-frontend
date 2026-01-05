@@ -22,5 +22,5 @@ const config = {
   }
 }
 
-export const createUserApi = (data) => ApiFromData.post("/api/users/createUsers", data);
-export const loginUserApi = (data) => Api.post("/api/users/login", data);
+export const createUserApi = (data) => Api.post("/api/user/register", data);
+export const loginUserApi = (data) => Api.post("/api/user/login", data);
