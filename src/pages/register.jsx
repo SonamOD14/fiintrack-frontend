@@ -34,9 +34,9 @@ export default function ExpenseTrackerSignup() {
 
     if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
       return toast.error("Please fill in all fields");
-    }else if (!formData.agreeToTerms) {
+    } else if (!formData.agreeToTerms) {
       return toast.error("You must agree to the terms and conditions");
-    }else if (formData.password !== formData.confirmPassword) {
+    } else if (formData.password !== formData.confirmPassword) {
       return toast.error("Passwords do not match");
     }
 
@@ -63,7 +63,7 @@ export default function ExpenseTrackerSignup() {
 
     } catch (error) {
       toast.error(error?.response?.data?.message || "An error occurred during registration");
-      
+
     }
   };
 
