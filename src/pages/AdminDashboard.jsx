@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { getUser } from "../services/api";
+import { getallUsersApi } from "../services/api";
 import toast from "react-hot-toast";
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getAllUsers = async () => {
       try {
-        const response = await getUser();
+        const response = await getallUsersApi();
 
         if (response?.data?.success) {
           setData(response.data.user);
@@ -32,27 +32,48 @@ const Dashboard = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
 
-      <div className="bg-white shadow rounded-lg overflow-hidden">
-        <table className="min-w-full border">
+      <div className="overflow-x-auto bg-white shadow rounded-lg">
+        <table className="min-w-full border border-gray-300">
           <thead className="bg-gray-200">
             <tr>
-              <th className="px-4 py-2 text-left">#</th>
-              <th className="px-4 py-2 text-left">Name</th>
-              <th className="px-4 py-2 text-left">Email</th>
+              <th className="py-2 px-4 border border-gray-300">#</th>
+              <th className="py-2 px-4 border border-gray-300">Email</th>
+              <th className="py-2 px-4 border border-gray-300">Username</th>
+              <th className="py-2 px-4 border border-gray-300">Action</th>
             </tr>
           </thead>
 
           <tbody>
             {data.map((user, index) => (
-              <tr key={user._id} className="border-t">
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">{user.name}</td>
-                <td className="px-4 py-2">{user.email}</td>
+              <tr
+                key={user._id || index}
+                className="even:bg-gray-100 hover:bg-gray-200 transition-colors"
+              >
+                <td className="py-2 px-4 border border-gray-300">
+                  {index + 1}
+                </td>
+
+                <td className="py-2 px-4 border border-gray-300">
+                  {user.email}
+                </td>
+
+                <td className="py-2 px-4 border border-gray-300">
+                  {user.username}
+                </td>
+
+                <td className="py-2 px-4 border border-gray-300">
+                  <button
+                    className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded"
+                  >
+                    Edit
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
     </div>
