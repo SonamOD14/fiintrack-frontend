@@ -29,6 +29,9 @@ import { Toaster } from "react-hot-toast";
 import Footers from "./components/Footers";
 import Dashboard from "./pages/Dashboard";
 import Signin from "./pages/Signin";
+import ForgotPassword from "./pages/ForgetPassword";
+import Analytics from "./pages/Analytics";
+import Admin from "./pages/AdminDashboard";
 
 
 function App() {
@@ -42,6 +45,9 @@ function App() {
         <Route path="/contact" element={<div>contact</div>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <Footers/>
     </Router>

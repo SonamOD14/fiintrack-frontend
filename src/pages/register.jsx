@@ -55,7 +55,7 @@ export default function ExpenseTrackerSignup() {
           success: (res) => {
             setTimeout(() => {
               navigate('/signin');
-            }, 1400);
+            }, 100);
             return <b>{res.data.message}</b>
           }
         }

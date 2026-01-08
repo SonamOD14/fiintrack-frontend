@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, Wallet, TrendingUp, PieChart, Lock, Mail } from 'lucide-react';
 import toast from "react-hot-toast";
 import { loginUserApi } from '../services/api';
+import { jwtDecode } from 'jwt-decode';
 
 import { Link } from 'react-router-dom';
 
