@@ -191,4 +191,164 @@ export default function BudgetPage() {
         </nav>
       </aside>
 
-  
+      {/* Main Content */}
+      <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
+        {/* Header */}
+        <header className="bg-white shadow-sm sticky top-0 z-40">
+          <div className="flex items-center justify-between p-6">
+            <div className="flex items-center gap-4">
+              <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-gray-600 hover:text-gray-900">
+                <Menu className="w-6 h-6" />
+              </button>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Budget Management</h1>
+                <p className="text-sm text-gray-500">Plan and track your spending limits</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={() => setShowAddModal(true)}
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all transform hover:scale-105 shadow-lg"
+              >
+                <Plus className="w-5 h-5" />
+                Add Budget
+              </button>
+              <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                <Bell className="w-6 h-6" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              </button>
+              <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 rounded-lg p-2">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white font-semibold">
+                  JD
+                </div>
+                <ChevronDown className="w-4 h-4 text-gray-600" />
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="p-6 space-y-6">
+          {/* Overview Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-600 rounded-2xl p-6 text-white shadow-xl transform hover:scale-105 transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <Target className="w-6 h-6" />
+                </div>
+                <Flame className="w-8 h-8 opacity-50" />
+              </div>
+              <p className="text-sm opacity-90 mb-1">Total Budget</p>
+              <p className="text-4xl font-bold mb-2">${totalBudget.toLocaleString()}</p>
+              <div className="flex items-center gap-2 text-xs opacity-75">
+                <Calendar className="w-3 h-3" />
+                <span>Monthly Limit</span>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-blue-500 via-indigo-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl transform hover:scale-105 transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <DollarSign className="w-6 h-6" />
+                </div>
+                <TrendingUp className="w-8 h-8 opacity-50" />
+              </div>
+              <p className="text-sm opacity-90 mb-1">Total Spent</p>
+              <p className="text-4xl font-bold mb-2">${totalSpent.toLocaleString()}</p>
+              <div className="flex items-center gap-2 text-xs">
+                <span className="bg-white/20 px-2 py-1 rounded-full">{percentageUsed}% used</span>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl transform hover:scale-105 transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <Wallet className="w-6 h-6" />
+                </div>
+                <ArrowDownCircle className="w-8 h-8 opacity-50" />
+              </div>
+              <p className="text-sm opacity-90 mb-1">Remaining</p>
+              <p className="text-4xl font-bold mb-2">${totalRemaining.toLocaleString()}</p>
+              <div className="flex items-center gap-2 text-xs">
+                <span className="bg-white/20 px-2 py-1 rounded-full">{(100 - parseFloat(percentageUsed)).toFixed(1)}% left</span>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-orange-500 via-red-500 to-orange-600 rounded-2xl p-6 text-white shadow-xl transform hover:scale-105 transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <Award className="w-6 h-6" />
+                </div>
+                <Flame className="w-8 h-8 opacity-50" />
+              </div>
+              <p className="text-sm opacity-90 mb-1">Budget Score</p>
+              <p className="text-4xl font-bold mb-2">87/100</p>
+              <div className="flex items-center gap-2 text-xs">
+                <span className="bg-white/20 px-2 py-1 rounded-full">Excellent</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Monthly Progress & Category Distribution */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Monthly Budget Progress */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-gray-900">Budget vs Spending Trend</h2>
+                <p className="text-sm text-gray-500">6-month comparison</p>
+              </div>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={monthlyProgressData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="month" tick={{ fill: '#6b7280' }} />
+                    <YAxis tick={{ fill: '#6b7280' }} />
+                    <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
+                    <Legend />
+                    <Line type="monotone" dataKey="budgeted" stroke="#10b981" strokeWidth={3} dot={{ fill: '#10b981', r: 6 }} name="Budgeted" />
+                    <Line type="monotone" dataKey="spent" stroke="#ef4444" strokeWidth={3} dot={{ fill: '#ef4444', r: 6 }} name="Spent" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Category Distribution Pie Chart */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-gray-900">Spending Distribution</h2>
+                <p className="text-sm text-gray-500">By category this month</p>
+              </div>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={categoryDistribution}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name.split(' ')[0]} ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={120}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {categoryDistribution.map((entry, index) => {
+                        const colorMap = {
+                          'green-500': '#10b981',
+                          'blue-500': '#3b82f6',
+                          'purple-500': '#a855f7',
+                          'red-500': '#ef4444',
+                          'pink-500': '#ec4899',
+                          'yellow-500': '#eab308',
+                          'amber-500': '#f59e0b',
+                          'emerald-500': '#10b981'
+                        };
+                        return <Cell key={`cell-${index}`} fill={colorMap[entry.color] || '#6b7280'} />;
+                      })}
+                    </Pie>
+                    <Tooltip formatter={(value) => `$${value}`} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
