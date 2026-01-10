@@ -352,3 +352,118 @@ export default function BudgetPage() {
               </div>
             </div>
           </div>
+
+          Budget Categories Grid
+          <div className="bg-white rounded-2xl p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Budget Categories</h2>
+                <p className="text-sm text-gray-500">Track spending across all categories</p>
+              </div>
+              <button className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 transition-all font-semibold">
+                View All
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {budgets.map((budget) => {
+                const percentage = (budget.spent / budget.budget) * 100;
+                const StatusIcon = getStatusIcon(budget.status);
+                
+                return (
+                  <div 
+                    key={budget.id} 
+                    className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border-2 border-gray-100 hover:border-emerald-300 hover:shadow-xl transition-all transform hover:-translate-y-1"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className={`w-14 h-14 ${budget.color} rounded-2xl flex items-center justify-center text-white shadow-lg`}>
+                        <budget.icon className="w-7 h-7" />
+                      </div>
+                      <StatusIcon className={`w-6 h-6 ${getStatusColor(budget.status).split(' ')[0]}`} />
+                    </div>
+
+                    <h3 className="font-bold text-gray-900 mb-1">{budget.category}</h3>
+                    <p className="text-xs text-gray-500 mb-4">{budget.transactions} transactions</p>
+
+                    {/* Progress Bar */}
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-semibold text-gray-700">${budget.spent}</span>
+                        <span className="text-sm font-semibold text-gray-500">of ${budget.budget}</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                        <div 
+                          className={`h-full ${budget.color} transition-all duration-500 rounded-full ${percentage > 100 ? 'animate-pulse' : ''}`}
+                          style={{ width: `${Math.min(percentage, 100)}%` }}
+                        ></div>
+                      </div>
+                      <div className="flex items-center justify-between mt-2">
+                        <span className={`text-xs font-bold ${percentage > 100 ? 'text-red-600' : percentage > 90 ? 'text-yellow-600' : 'text-green-600'}`}>
+                          {percentage.toFixed(1)}% used
+                        </span>
+                        <span className={`text-xs font-semibold ${budget.remaining < 0 ? 'text-red-600' : 'text-gray-600'}`}>
+                          ${Math.abs(budget.remaining)} {budget.remaining < 0 ? 'over' : 'left'}
+                        </span>
+                      </div>
+                    </div>
+
+                    Trend Indicator
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                      <div className="flex items-center gap-2">
+                        {budget.trend === 'up' ? (
+                          <TrendingUp className="w-4 h-4 text-red-600" />
+                        ) : budget.trend === 'down' ? (
+                          <TrendingDown className="w-4 h-4 text-green-600" />
+                        ) : (
+                          <div className="w-4 h-0.5 bg-gray-400"></div>
+                        )}
+                        <span className={`text-xs font-semibold ${budget.trend === 'up' ? 'text-red-600' : budget.trend === 'down' ? 'text-green-600' : 'text-gray-600'}`}>
+                          {budget.trend === 'stable' ? 'Stable' : `${Math.abs(((budget.spent - budget.lastMonth) / budget.lastMonth * 100)).toFixed(0)}%`}
+                        </span>
+                      </div>
+                      <div className="flex gap-1">
+                        <button className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all">
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Budget Tips */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200">
+              <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center text-white mb-4">
+                <CheckCircle className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">On Track!</h3>
+              <p className="text-sm text-gray-600">You're staying within budget for 6 out of 8 categories. Great job!</p>
+            </div>
+
+            <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border-2 border-yellow-200">
+              <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center text-white mb-4">
+                <AlertCircle className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Watch Out</h3>
+              <p className="text-sm text-gray-600">Entertainment spending is over budget by $20. Consider reducing expenses.</p>
+            </div>
+
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border-2 border-blue-200">
+              <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white mb-4">
+                <Target className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Goal Achieved</h3>
+              <p className="text-sm text-gray-600">You've saved $585 this month, exceeding your savings goal!</p>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
