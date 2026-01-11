@@ -605,3 +605,147 @@ export default function ProfilePage() {
             </div>
           )}
 
+          {activeTab === 'settings' && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl p-8 shadow-lg">
+                <h3 className="text-2xl font-bold text-gray-900 mb-8">Account Settings</h3>
+                <div className="space-y-6 max-w-2xl">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      value={userData.name}
+                      onChange={(e) => setUserData({...userData, name: e.target.value})}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                    <input
+                      type="email"
+                      value={userData.email}
+                      onChange={(e) => setUserData({...userData, email: e.target.value})}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                    <input
+                      type="tel"
+                      value={userData.phone}
+                      onChange={(e) => setUserData({...userData, phone: e.target.value})}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
+                    <input
+                      type="text"
+                      value={userData.location}
+                      onChange={(e) => setUserData({...userData, location: e.target.value})}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Bio</label>
+                    <textarea
+                      value={userData.bio}
+                      onChange={(e) => setUserData({...userData, bio: e.target.value})}
+                      rows={4}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all resize-none"
+                    />
+                  </div>
+                  <div className="flex gap-4 pt-4">
+                    <button className="px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all transform hover:scale-105 shadow-lg flex items-center gap-2">
+                      <Save className="w-5 h-5" />
+                      Save Changes
+                    </button>
+                    <button className="px-8 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'security' && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl p-8 shadow-lg">
+                <h3 className="text-2xl font-bold text-gray-900 mb-8">Security Settings</h3>
+                <div className="space-y-6 max-w-2xl">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Current Password</label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all pr-12"
+                        placeholder="Enter current password"
+                      />
+                      <button
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">New Password</label>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
+                      placeholder="Enter new password"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Confirm New Password</label>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
+                      placeholder="Confirm new password"
+                    />
+                  </div>
+
+                  <div className="pt-6 border-t border-gray-200">
+                    <h4 className="font-bold text-gray-900 mb-4">Two-Factor Authentication</h4>
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                          <Smartphone className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">SMS Authentication</p>
+                          <p className="text-sm text-gray-500">Receive codes via text message</p>
+                        </div>
+                      </div>
+                      <button className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg hover:shadow-lg transition-all transform hover:scale-105 font-semibold">
+                        Enable
+                      </button>
+                    </div>
+                  </div>
+
+                  <button className="px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all transform hover:scale-105 shadow-lg flex items-center gap-2">
+                    <Lock className="w-5 h-5" />
+                    Update Password
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl p-8 border-2 border-red-300 shadow-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <AlertCircle className="w-8 h-8 text-red-600" />
+                  <h4 className="text-xl font-bold text-red-900">Danger Zone</h4>
+                </div>
+                <p className="text-sm text-red-700 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+                <button className="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                  Delete Account
+                </button>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}
