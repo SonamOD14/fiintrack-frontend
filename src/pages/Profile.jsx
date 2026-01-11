@@ -464,3 +464,144 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
+                <div className="bg-white rounded-2xl p-6 shadow-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-gray-900">Leaderboard</h3>
+                    <Trophy className="w-6 h-6 text-yellow-500" />
+                  </div>
+                  <div className="space-y-3">
+                    {leaderboard.map((user, index) => (
+                      <div 
+                        key={index} 
+                        className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
+                          user.isUser 
+                            ? 'bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 shadow-lg' 
+                            : 'hover:bg-gray-50'
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold ${
+                          user.rank === 1 ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white' :
+                          user.rank === 2 ? 'bg-gradient-to-r from-gray-300 to-gray-400 text-white' :
+                          user.rank === 3 ? 'bg-gradient-to-r from-orange-400 to-red-400 text-white' :
+                          'bg-gray-100 text-gray-600'
+                        }`}>
+                          {user.rank === 1 ? <Crown className="w-4 h-4" /> : user.rank}
+                        </div>
+                        <div className={`w-10 h-10 ${user.isUser ? 'bg-gradient-to-br from-emerald-500 to-teal-600' : 'bg-gradient-to-br from-blue-500 to-indigo-600'} rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-lg`}>
+                          {user.avatar}
+                        </div>
+                        <div className="flex-1">
+                          <p className={`font-semibold ${user.isUser ? 'text-emerald-700' : 'text-gray-900'}`}>{user.name}</p>
+                          <p className="text-sm text-gray-500">{user.score.toLocaleString()} points</p>
+                        </div>
+                        {user.change !== 0 && (
+                          <div className={`px-2 py-1 rounded-full text-xs font-bold ${
+                            user.change > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+                          }`}>
+                            {user.change > 0 ? '↑' : '↓'} {Math.abs(user.change)}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'analytics' && (
+            <div className="space-y-6">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                <div className="relative bg-white rounded-2xl p-6 shadow-lg">
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">Income vs Spending Trend</h3>
+                  <div className="h-96">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={monthlySpending}>
+                        <defs>
+                          <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                          </linearGradient>
+                          <linearGradient id="colorExpenses" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis dataKey="month" tick={{ fill: '#6b7280' }} />
+                        <YAxis tick={{ fill: '#6b7280' }} />
+                        <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', boxShadow: '0 10px 40px rgba(0,0,0,0.1)' }} />
+                        <Legend />
+                        <Area type="monotone" dataKey="income" stroke="#10b981" fillOpacity={1} fill="url(#colorIncome)" name="Income" />
+                        <Area type="monotone" dataKey="amount" stroke="#ef4444" fillOpacity={1} fill="url(#colorExpenses)" name="Expenses" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'achievements' && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl p-8 shadow-lg">
+                <div className="text-center mb-8">
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">Achievements & Badges</h3>
+                  <p className="text-gray-500">Unlock badges by reaching milestones and completing challenges</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {achievements.map((achievement) => (
+                    <div 
+                      key={achievement.id}
+                      className={`relative p-6 rounded-2xl transition-all transform hover:scale-105 ${
+                        achievement.earned
+                          ? 'bg-gradient-to-br from-white to-gray-50 border-2 border-emerald-200 shadow-xl'
+                          : 'bg-gray-50 border-2 border-gray-200 opacity-60'
+                      }`}
+                    >
+                      {achievement.earned && (
+                        <div className="absolute top-2 right-2">
+                          <div className="w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                            <CheckCircle className="w-4 h-4 text-white" />
+                          </div>
+                        </div>
+                      )}
+                      <div className={`w-20 h-20 bg-gradient-to-r ${achievement.color} rounded-2xl flex items-center justify-center text-white mb-4 mx-auto shadow-2xl ${achievement.earned ? 'animate-pulse' : 'grayscale'}`}>
+                        <achievement.icon className="w-10 h-10" />
+                      </div>
+                      <h4 className="font-bold text-gray-900 text-center mb-2">{achievement.title}</h4>
+                      <p className="text-sm text-gray-600 text-center mb-3">{achievement.description}</p>
+                      {achievement.earned && achievement.date && (
+                        <div className="text-center">
+                          <span className="text-xs font-semibold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">
+                            Unlocked {achievement.date}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 p-6 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl border-2 border-purple-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-xl font-bold text-gray-900">Overall Progress</h4>
+                    <span className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      {achievements.filter(a => a.earned).length}/{achievements.length}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden shadow-inner">
+                    <div 
+                      className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-full transition-all duration-1000 shadow-lg"
+                      style={{ width: `${(achievements.filter(a => a.earned).length / achievements.length) * 100}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-sm text-gray-600 mt-3 text-center">
+                    {achievements.length - achievements.filter(a => a.earned).length} more to unlock all achievements!
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
