@@ -1,18 +1,19 @@
 import axios from "axios";
 
+console.log("im here");
 const ApiFromData = axios.create({
-  baseURL : import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
-  headers :{
-    "content-Type":"multipart/form-data"
+  headers: {
+    "content-Type": "multipart/form-data"
   },
 });
 
 const Api = axios.create({
-  baseURL : import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
-  headers :{
-    "content-Type":"application/json"
+  headers: {
+    "content-Type": "application/json"
   },
 });
 
