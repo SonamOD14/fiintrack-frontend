@@ -9,6 +9,8 @@ import ForgotPassword from "./pages/ForgetPassword";
 import Analytics from "./pages/Analytics";
 import Admin from "./pages/AdminDashboard";
 import TransactionsPage from "./pages/Transactions";
+import BudgetPage from "./pages/Budget";
+import ProfilePage from "./pages/Profile";  
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/transactions" element={<TransactionsPage />} /> 
+        <Route path="/budget" element={<BudgetPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       <Footers/>
     </Router>
