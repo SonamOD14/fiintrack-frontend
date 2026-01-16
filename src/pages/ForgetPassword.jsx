@@ -1,15 +1,37 @@
 import React, { useState } from 'react';
 import { Mail, ArrowLeft, Wallet, TrendingUp, PieChart, Lock, CheckCircle } from 'lucide-react';
 
+import { forgetPasswordApi } from '../services/api';
+import { toast } from 'react-hot-toast';
+
+import { Link } from 'react-router-dom';
+
+
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [focusedField, setFocusedField] = useState('');
 
-  const handleSubmit = () => {
-    if (email) {
-      setIsSubmitted(true);
-      console.log('Password reset email sent to:', email);
+  const handleSubmit = async () => {
+    if (!email) {
+      toast.error("Please enter your email!");
+      return;
+    }
+  
+    try {
+      await toast.promise(
+        forgetPasswordApi({ email }),
+        {
+          loading: "Sending reset link...",
+          success: (res) => {
+            setIsSubmitted(true);
+            return <b>{res.data.message}</b>; // show backend success message
+          },
+          error: (err) => <b>{err?.response?.data?.message || "Something went wrong!"}</b>
+        }
+      );
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -50,15 +72,6 @@ export default function ForgotPassword() {
               </div>
             ))}
           </div>
-
-          <div className="flex gap-6 mt-16">
-            <button className="px-8 py-3 bg-white text-emerald-600 rounded-xl font-semibold hover:bg-emerald-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              GET STARTED
-            </button>
-            <button className="px-8 py-3 bg-transparent border-2 border-white text-white rounded-xl font-semibold hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
-              LEARN MORE
-            </button>
-          </div>
         </div>
       </div>
 
@@ -81,10 +94,10 @@ export default function ForgotPassword() {
           {!isSubmitted ? (
             <>
               <div className="mb-8">
-                <a href="#" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-semibold mb-6 transition-colors">
+                <Link to="/Signin" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-semibold mb-6 transition-colors">
                   <ArrowLeft className="w-5 h-5 mr-2" />
                   Back to Sign In
-                </a>
+                </Link>
                 <h2 className="text-4xl font-bold text-gray-900 mb-2">Forgot Password?</h2>
                 <p className="text-gray-600">No worries! Enter your email and we'll send you reset instructions.</p>
               </div>
@@ -116,9 +129,9 @@ export default function ForgotPassword() {
                 <div className="text-center">
                   <p className="text-sm text-gray-600">
                     Remember your password?{' '}
-                    <a href="#" className="text-emerald-600 font-semibold hover:text-emerald-700 hover:underline transition-colors">
+                    <Link to ="/signin" className="text-emerald-600 font-semibold hover:text-emerald-700 hover:underline transition-colors">
                       Sign In
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </div>
@@ -139,10 +152,10 @@ export default function ForgotPassword() {
                   try another email address
                 </button>
               </p>
-              <a href="#" className="inline-flex items-center justify-center w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl">
+              <Link to="/signin" className="inline-flex items-center justify-center w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl">
                 <ArrowLeft className="w-5 h-5 mr-2" />
                 Back to Sign In
-              </a>
+              </Link>
             </div>
           )}
         </div>
