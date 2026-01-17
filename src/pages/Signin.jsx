@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, Wallet, TrendingUp, PieChart, Lock, Mail } from 'lucide-react';
 import toast from "react-hot-toast";
 import { loginUserApi } from '../services/api';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function ExpenseTrackerSignin() {
+  const navigate = useNavigate(); // for redirect to dashboard
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -16,42 +17,44 @@ export default function ExpenseTrackerSignin() {
   });
   const [focusedField, setFocusedField] = useState('');
 
+  // - LOGIN HANDLER 
   const handleSubmit = async () => {
+    if (!formData.email || !formData.password) {
+      return toast.error("Please fill in all fields");
+    }
 
     const sendData = {
       email: formData.email,
       password: formData.password,
-    }
+    };
 
     try {
-      const response = await toast.promise(
-        loginUserApi(sendData), {
-        loading: "checking credentials...",
-        success: (res) => {
-          return <b>{res.data.message}</b>
-        }
-      });
+      const toastId = toast.loading("Checking credentials...");
+
+      const res = await loginUserApi(sendData);
+
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+
+      toast.success(res.data.message, { id: toastId });
+
+      navigate('/dashboard');
+
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Something went wrong!");
+      toast.error(error?.response?.data?.message || "Login failed!");
     }
-
   };
-
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 flex">
-      {/* Left Panel - Enhanced with animations */}
+      {/* Left Panel */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-700 relative overflow-hidden" style={{ clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)' }}>
-        {/* Animated background elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-20 right-20 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
 
         <div className="relative z-10 flex flex-col justify-center items-center w-full px-16 text-white">
-          {/* Logo with animation */}
           <div className="mb-12 transform hover:scale-110 transition-transform duration-300">
             <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-2xl">
               <Wallet className="w-16 h-16 text-emerald-600" strokeWidth={2} />
@@ -61,7 +64,6 @@ export default function ExpenseTrackerSignin() {
           <h1 className="text-5xl font-bold mb-4 text-center">Expense Tracker</h1>
           <p className="text-xl text-emerald-100 mb-16 text-center">Smart Money Management</p>
 
-          {/* Feature cards with hover effects */}
           <div className="space-y-6 w-full max-w-md">
             {[
               { icon: TrendingUp, text: 'Track expenses effortlessly', delay: '0ms' },
@@ -81,7 +83,6 @@ export default function ExpenseTrackerSignin() {
             ))}
           </div>
 
-          {/* CTA Buttons */}
           <div className="flex gap-6 mt-16">
             <button className="px-8 py-3 bg-white text-emerald-600 rounded-xl font-semibold hover:bg-emerald-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
               SIGN IN HERE
@@ -95,22 +96,7 @@ export default function ExpenseTrackerSignin() {
 
       {/* Right Panel - Sign In Form */}
       <div className="flex-1 flex items-center justify-center p-8 lg:p-16 relative">
-        {/* Decorative zigzag pattern overlay */}
-        <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-32 -ml-16">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d="M 0,0 L 50,10 L 0,20 L 50,30 L 0,40 L 50,50 L 0,60 L 50,70 L 0,80 L 50,90 L 0,100 L 0,0 Z"
-              fill="white" opacity="0.7" />
-          </svg>
-        </div>
-
         <div className="w-full max-w-md relative z-10">
-          {/* Mobile Logo */}
-          <div className="lg:hidden mb-8 flex justify-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center shadow-lg">
-              <Wallet className="w-10 h-10 text-white" strokeWidth={2} />
-            </div>
-          </div>
-
           <div className="mb-8">
             <h2 className="text-4xl font-bold text-gray-900 mb-2">Welcome back</h2>
             <p className="text-gray-600">Sign in to continue managing your expenses</p>
@@ -172,9 +158,12 @@ export default function ExpenseTrackerSignin() {
                   Remember me
                 </label>
               </div>
-              <a href="#" className="text-sm text-emerald-600 font-semibold hover:text-emerald-700 hover:underline transition-colors">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-emerald-600 font-semibold hover:text-emerald-700 hover:underline transition-colors"
+              >
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             {/* Submit Button */}
