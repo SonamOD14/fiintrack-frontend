@@ -68,24 +68,24 @@ export default function ExpenseTrackerAnalytics() {
 
   // Insights data
   const insights = [
-    { 
-      type: 'success', 
-      title: 'Great Progress!', 
-      description: 'You spent 15% less on shopping this month', 
+    {
+      type: 'success',
+      title: 'Great Progress!',
+      description: 'You spent 15% less on shopping this month',
       icon: TrendingDown,
       color: 'bg-green-100 text-green-600'
     },
-    { 
-      type: 'warning', 
-      title: 'Watch Out', 
-      description: 'Food expenses are 20% higher than last month', 
+    {
+      type: 'warning',
+      title: 'Watch Out',
+      description: 'Food expenses are 20% higher than last month',
       icon: TrendingUp,
       color: 'bg-orange-100 text-orange-600'
     },
-    { 
-      type: 'info', 
-      title: 'Savings Goal', 
-      description: 'You\'re on track to save $6,000 this month', 
+    {
+      type: 'info',
+      title: 'Savings Goal',
+      description: 'You\'re on track to save $6,000 this month',
       icon: DollarSign,
       color: 'bg-blue-100 text-blue-600'
     }
@@ -94,35 +94,7 @@ export default function ExpenseTrackerAnalytics() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-full bg-gradient-to-b from-emerald-600 to-teal-700 text-white transition-all duration-300 z-50 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
-        <div className="p-6 flex items-center justify-between">
-          <div className={`flex items-center gap-3 ${!sidebarOpen && 'justify-center'}`}>
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <Wallet className="w-6 h-6 text-emerald-600" />
-            </div>
-            {sidebarOpen && <span className="font-bold text-xl">ExpenseTracker</span>}
-          </div>
-        </div>
 
-        <nav className="mt-8">
-          {[
-            { icon: Home, label: 'Dashboard', active: false },
-            { icon: TrendingUp, label: 'Analytics', active: true },
-            { icon: CreditCard, label: 'Transactions' },
-            { icon: Wallet, label: 'Budget' },
-            { icon: User, label: 'Profile' }
-          ].map((item, index) => (
-            <a
-              key={index}
-              href="#"
-              className={`flex items-center gap-4 px-6 py-4 hover:bg-white/10 transition-all ${item.active ? 'bg-white/20 border-r-4 border-white' : ''}`}
-            >
-              <item.icon className="w-5 h-5" />
-              {sidebarOpen && <span>{item.label}</span>}
-            </a>
-          ))}
-        </nav>
-      </aside>
 
       {/* Main Content */}
       <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
@@ -216,16 +188,16 @@ export default function ExpenseTrackerAnalytics() {
                 <AreaChart data={comparisonData}>
                   <defs>
                     <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="colorExpenses" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="colorSavings" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -335,8 +307,8 @@ export default function ExpenseTrackerAnalytics() {
                   <AreaChart data={timeOfDayData}>
                     <defs>
                       <linearGradient id="colorTime" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -396,7 +368,7 @@ export default function ExpenseTrackerAnalytics() {
                     </div>
                   </div>
                 ))}
-                
+
                 <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200">
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-emerald-500 text-white flex-shrink-0">
