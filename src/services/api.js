@@ -23,6 +23,9 @@ const config = {
   }
 }
 
+
 export const createUserApi = (data) => Api.post("/api/user/register", data);
 export const loginUserApi = (data) => Api.post("/api/user/login", data);
-export const getallUsersApi = () => Api.get("/api/user/all-users",);
+export const getallUsersApi = () => Api.get("/api/user/all-users", config);
+export const forgetPasswordApi = (data) => Api.post("/api/user/forgetPassword", data);
+export const resetPasswordApi = (data) => Api.post("/api/user/reset-password", data);
