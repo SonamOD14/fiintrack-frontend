@@ -103,54 +103,6 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-full bg-gradient-to-b from-emerald-600 via-teal-600 to-emerald-700 text-white transition-all duration-300 z-50 shadow-2xl ${sidebarOpen ? 'w-64' : 'w-20'}`}>
-        <div className="p-6 flex items-center justify-between">
-          <div className={`flex items-center gap-3 ${!sidebarOpen && 'justify-center'}`}>
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg transform hover:rotate-12 transition-transform">
-              <Wallet className="w-6 h-6 text-emerald-600" />
-            </div>
-            {sidebarOpen && <span className="font-bold text-xl">ExpenseTracker</span>}
-          </div>
-        </div>
-
-        <nav className="mt-8">
-          {[
-            { icon: Home, label: 'Dashboard', active: false },
-            { icon: TrendingUp, label: 'Analytics', active: false },
-            { icon: CreditCard, label: 'Transactions', active: false },
-            { icon: Wallet, label: 'Budget', active: false },
-            { icon: User, label: 'Profile', active: true }
-          ].map((item, index) => (
-            <a
-              key={index}
-              href="#"
-              className={`flex items-center gap-4 px-6 py-4 hover:bg-white/10 transition-all ${item.active ? 'bg-white/20 border-r-4 border-white' : ''}`}
-            >
-              <item.icon className="w-5 h-5" />
-              {sidebarOpen && <span>{item.label}</span>}
-            </a>
-          ))}
-        </nav>
-
-        {sidebarOpen && (
-          <div className="absolute bottom-8 left-0 right-0 px-6">
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 border border-white/20">
-              <div className="flex items-center gap-3 mb-3">
-                <Sparkles className="w-5 h-5 text-yellow-300" />
-                <span className="font-semibold text-sm">Level {userData.level}</span>
-              </div>
-              <div className="w-full bg-white/20 rounded-full h-2 mb-2">
-                <div 
-                  className="h-full bg-gradient-to-r from-yellow-300 to-orange-400 rounded-full transition-all duration-500"
-                  style={{ width: `${xpPercentage}%` }}
-                ></div>
-              </div>
-              <p className="text-xs opacity-75">{userData.xp} / {userData.nextLevelXp} XP</p>
-            </div>
-          </div>
-        )}
-      </aside>
 
       {/* Main Content */}
       <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
@@ -210,7 +162,7 @@ export default function ProfilePage() {
                   <button className="absolute bottom-2 right-2 w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform group">
                     <Camera className="w-6 h-6 text-white" />
                   </button>
-                  
+
                   {/* Level Badge */}
                   <div className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-xl flex items-center gap-1 animate-bounce">
                     <Sparkles className="w-4 h-4" />
@@ -234,7 +186,7 @@ export default function ProfilePage() {
                       <span>Rank #3 • Top 5% of users</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-4 justify-center md:justify-start text-sm">
                     <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
                       <Mail className="w-4 h-4" />
@@ -257,7 +209,7 @@ export default function ProfilePage() {
                       <span className="text-sm font-bold">{xpPercentage.toFixed(0)}%</span>
                     </div>
                     <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden">
-                      <div 
+                      <div
                         className="h-full bg-gradient-to-r from-yellow-300 via-orange-400 to-pink-400 rounded-full transition-all duration-1000 animate-pulse"
                         style={{ width: `${xpPercentage}%` }}
                       ></div>
@@ -268,7 +220,7 @@ export default function ProfilePage() {
 
                 {/* Action Buttons */}
                 <div className="flex flex-col gap-3">
-                  <button 
+                  <button
                     onClick={() => setIsEditing(!isEditing)}
                     className="px-6 py-3 bg-white text-purple-600 rounded-xl font-semibold hover:bg-purple-50 transition-all transform hover:scale-105 shadow-2xl flex items-center gap-2"
                   >
@@ -318,11 +270,10 @@ export default function ProfilePage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all whitespace-nowrap ${
-                  activeTab === tab.id
+                className={`relative flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all whitespace-nowrap ${activeTab === tab.id
                     ? 'text-white'
                     : 'text-gray-600 hover:bg-gray-100'
-                }`}
+                  }`}
               >
                 {activeTab === tab.id && (
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl shadow-lg"></div>
@@ -424,9 +375,9 @@ export default function ProfilePage() {
                             </div>
                             <div className="mb-4">
                               <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
-                                <div 
+                                <div
                                   className="h-full rounded-full transition-all duration-1000 shadow-lg"
-                                  style={{ 
+                                  style={{
                                     width: `${percentage}%`,
                                     background: `linear-gradient(90deg, ${goal.color}, ${goal.color}dd)`
                                   }}
@@ -471,20 +422,18 @@ export default function ProfilePage() {
                   </div>
                   <div className="space-y-3">
                     {leaderboard.map((user, index) => (
-                      <div 
-                        key={index} 
-                        className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
-                          user.isUser 
-                            ? 'bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 shadow-lg' 
+                      <div
+                        key={index}
+                        className={`flex items-center gap-4 p-4 rounded-xl transition-all ${user.isUser
+                            ? 'bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 shadow-lg'
                             : 'hover:bg-gray-50'
-                        }`}
+                          }`}
                       >
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold ${
-                          user.rank === 1 ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white' :
-                          user.rank === 2 ? 'bg-gradient-to-r from-gray-300 to-gray-400 text-white' :
-                          user.rank === 3 ? 'bg-gradient-to-r from-orange-400 to-red-400 text-white' :
-                          'bg-gray-100 text-gray-600'
-                        }`}>
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold ${user.rank === 1 ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white' :
+                            user.rank === 2 ? 'bg-gradient-to-r from-gray-300 to-gray-400 text-white' :
+                              user.rank === 3 ? 'bg-gradient-to-r from-orange-400 to-red-400 text-white' :
+                                'bg-gray-100 text-gray-600'
+                          }`}>
                           {user.rank === 1 ? <Crown className="w-4 h-4" /> : user.rank}
                         </div>
                         <div className={`w-10 h-10 ${user.isUser ? 'bg-gradient-to-br from-emerald-500 to-teal-600' : 'bg-gradient-to-br from-blue-500 to-indigo-600'} rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-lg`}>
@@ -495,9 +444,8 @@ export default function ProfilePage() {
                           <p className="text-sm text-gray-500">{user.score.toLocaleString()} points</p>
                         </div>
                         {user.change !== 0 && (
-                          <div className={`px-2 py-1 rounded-full text-xs font-bold ${
-                            user.change > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
-                          }`}>
+                          <div className={`px-2 py-1 rounded-full text-xs font-bold ${user.change > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+                            }`}>
                             {user.change > 0 ? '↑' : '↓'} {Math.abs(user.change)}
                           </div>
                         )}
@@ -520,12 +468,12 @@ export default function ProfilePage() {
                       <AreaChart data={monthlySpending}>
                         <defs>
                           <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                           </linearGradient>
                           <linearGradient id="colorExpenses" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8} />
+                            <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -550,16 +498,15 @@ export default function ProfilePage() {
                   <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">Achievements & Badges</h3>
                   <p className="text-gray-500">Unlock badges by reaching milestones and completing challenges</p>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {achievements.map((achievement) => (
-                    <div 
+                    <div
                       key={achievement.id}
-                      className={`relative p-6 rounded-2xl transition-all transform hover:scale-105 ${
-                        achievement.earned
+                      className={`relative p-6 rounded-2xl transition-all transform hover:scale-105 ${achievement.earned
                           ? 'bg-gradient-to-br from-white to-gray-50 border-2 border-emerald-200 shadow-xl'
                           : 'bg-gray-50 border-2 border-gray-200 opacity-60'
-                      }`}
+                        }`}
                     >
                       {achievement.earned && (
                         <div className="absolute top-2 right-2">
@@ -592,7 +539,7 @@ export default function ProfilePage() {
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden shadow-inner">
-                    <div 
+                    <div
                       className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-full transition-all duration-1000 shadow-lg"
                       style={{ width: `${(achievements.filter(a => a.earned).length / achievements.length) * 100}%` }}
                     ></div>
@@ -615,7 +562,7 @@ export default function ProfilePage() {
                     <input
                       type="text"
                       value={userData.name}
-                      onChange={(e) => setUserData({...userData, name: e.target.value})}
+                      onChange={(e) => setUserData({ ...userData, name: e.target.value })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
                     />
                   </div>
@@ -624,7 +571,7 @@ export default function ProfilePage() {
                     <input
                       type="email"
                       value={userData.email}
-                      onChange={(e) => setUserData({...userData, email: e.target.value})}
+                      onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
                     />
                   </div>
@@ -633,7 +580,7 @@ export default function ProfilePage() {
                     <input
                       type="tel"
                       value={userData.phone}
-                      onChange={(e) => setUserData({...userData, phone: e.target.value})}
+                      onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
                     />
                   </div>
@@ -642,7 +589,7 @@ export default function ProfilePage() {
                     <input
                       type="text"
                       value={userData.location}
-                      onChange={(e) => setUserData({...userData, location: e.target.value})}
+                      onChange={(e) => setUserData({ ...userData, location: e.target.value })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all"
                     />
                   </div>
@@ -650,7 +597,7 @@ export default function ProfilePage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Bio</label>
                     <textarea
                       value={userData.bio}
-                      onChange={(e) => setUserData({...userData, bio: e.target.value})}
+                      onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
                       rows={4}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all resize-none"
                     />
