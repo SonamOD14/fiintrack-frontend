@@ -51,36 +51,6 @@ export default function TransactionsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-full bg-gradient-to-b from-emerald-600 to-teal-700 text-white transition-all duration-300 z-50 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
-        <div className="p-6 flex items-center justify-between">
-          <div className={`flex items-center gap-3 ${!sidebarOpen && 'justify-center'}`}>
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <Wallet className="w-6 h-6 text-emerald-600" />
-            </div>
-            {sidebarOpen && <span className="font-bold text-xl">ExpenseTracker</span>}
-          </div>
-        </div>
-
-        <nav className="mt-8">
-          {[
-            { icon: Home, label: 'Dashboard', active: false },
-            { icon: TrendingUp, label: 'Analytics', active: false },
-            { icon: CreditCard, label: 'Transactions', active: true },
-            { icon: Wallet, label: 'Budget' },
-            { icon: User, label: 'Profile' }
-          ].map((item, index) => (
-            <a
-              key={index}
-              href="#"
-              className={`flex items-center gap-4 px-6 py-4 hover:bg-white/10 transition-all ${item.active ? 'bg-white/20 border-r-4 border-white' : ''}`}
-            >
-              <item.icon className="w-5 h-5" />
-              {sidebarOpen && <span>{item.label}</span>}
-            </a>
-          ))}
-        </nav>
-      </aside>
 
       {/* Main Content */}
       <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
