@@ -1,36 +1,56 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
 import Home from "./pages/home";
 import Register from "./pages/register";
-import { Toaster } from "react-hot-toast";
-import Footers from "./components/Footers";
+import Footer from "./components/Footer";
 import Dashboard from "./pages/Dashboard";
 import Signin from "./pages/Signin";
 import ForgotPassword from "./pages/ForgetPassword";
 import Analytics from "./pages/Analytics";
-import Admin from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import TransactionsPage from "./pages/Transactions";
 import BudgetPage from "./pages/Budget";
-import ProfilePage from "./pages/Profile";  
+import ProfilePage from "./pages/Profile";
+import Sidebar from "./components/Sidebar";
+
+function Layout() {
+  const location = useLocation();
+  const hideLayout = ["/register", "/signin", "/login", "/forgot-password"]
+    .includes(location.pathname);
+
+  return (
+    <>
+      {!hideLayout && <Sidebar />}
+      <Outlet />
+      {!hideLayout && <Footer />}
+    </>
+  );
+}
 
 function App() {
   return (
     <Router>
+      {/*  GLOBAL TOASTER */}
       <Toaster position="top-right" />
+
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<div>login</div>} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/contact" element={<div>contact</div>} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/budget" element={<BudgetPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Route>
+
+        {/* Auth routes */}
+        <Route path="/login" element={<Signin />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/transactions" element={<TransactionsPage />} /> 
-        <Route path="/budget" element={<BudgetPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
-      <Footers/>
     </Router>
   );
 }
