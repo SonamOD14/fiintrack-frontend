@@ -124,7 +124,7 @@ export default function SimpleFooter() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Copyright */}
             <p className="text-sm text-gray-400 flex items-center gap-2">
-              © 2026 ExpenseTracker. Made with <Heart className="w-4 h-4 text-red-500" fill="currentColor" /> by Team ExpenseTracker
+              © 2026 ExpenseTracker. Made with <Heart className="w-4 h-4 text-red-500" fill="currentColor" /> by Team SonamDAI
             </p>
 
             {/* Social Links */}
