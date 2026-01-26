@@ -10,10 +10,17 @@ export default function ExpenseTrackerDashboard() {
   useEffect(() => {
     axios.get("/api/expenses/recent")
       .then((res) => {
-        setTransactions(res.data);
+        console.log("API RESPONSE:", res.data); // 👈 IMPORTANT
+
+        if (Array.isArray(res.data)) {
+          setTransactions(res.data);
+        } else {
+          setTransactions([]); // prevent crash
+        }
       })
       .catch((err) => {
-        console.error(err);
+        console.error("API ERROR:", err);
+        setTransactions([]);
       });
   }, []);
 
@@ -151,14 +158,14 @@ export default function ExpenseTrackerDashboard() {
                   This Month
                 </button>
               </div>
-              <div className="h-80">
+              <div className="h-80 min-h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={spiderData}>
                     <PolarGrid stroke="#e5e7eb" />
                     <PolarAngleAxis dataKey="category" tick={{ fill: '#6b7280', fontSize: 12 }} />
                     <PolarRadiusAxis angle={90} domain={[0, 1000]} tick={{ fill: '#6b7280' }} />
                     <Radar name="Spending" dataKey="amount" stroke="#10b981" fill="#10b981" fillOpacity={0.6} />
-                    <Tooltip 
+                    <Tooltip
                       contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                       formatter={(value) => [`$${value}`, 'Amount']}
                     />
@@ -233,7 +240,7 @@ export default function ExpenseTrackerDashboard() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis dataKey="month" tick={{ fill: '#6b7280' }} />
                   <YAxis tick={{ fill: '#6b7280' }} />
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                     formatter={(value) => [`$${value}`, 'Amount']}
                   />
