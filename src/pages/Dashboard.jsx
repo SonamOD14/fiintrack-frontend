@@ -1,10 +1,21 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Wallet, TrendingUp, TrendingDown, DollarSign, CreditCard, ShoppingCart, Home, Utensils, Car, Film, Heart, ShoppingBag, Menu, Bell, User, Search, ChevronDown, Calendar } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import axios from "axios";
 
 export default function ExpenseTrackerDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    axios.get("/api/expenses/recent")
+      .then((res) => {
+        setTransactions(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   // Spider/Radar chart data - Shows spending by category
   const spiderData = [
@@ -34,15 +45,6 @@ export default function ExpenseTrackerDashboard() {
     { name: 'Entertainment', value: 320, color: '#ef4444' },
     { name: 'Healthcare', value: 280, color: '#8b5cf6' },
     { name: 'Bills', value: 750, color: '#06b6d4' }
-  ];
-
-  // Recent transactions
-  const transactions = [
-    { id: 1, name: 'Grocery Shopping', category: 'Food', amount: -125.50, date: '2026-01-06', icon: ShoppingCart, color: 'bg-green-100 text-green-600' },
-    { id: 2, name: 'Uber Ride', category: 'Transport', amount: -28.00, date: '2026-01-05', icon: Car, color: 'bg-blue-100 text-blue-600' },
-    { id: 3, name: 'Netflix Subscription', category: 'Entertainment', amount: -15.99, date: '2026-01-05', icon: Film, color: 'bg-red-100 text-red-600' },
-    { id: 4, name: 'Restaurant', category: 'Food', amount: -85.00, date: '2026-01-04', icon: Utensils, color: 'bg-green-100 text-green-600' },
-    { id: 5, name: 'Clothing Store', category: 'Shopping', amount: -210.00, date: '2026-01-03', icon: ShoppingBag, color: 'bg-orange-100 text-orange-600' }
   ];
 
   return (
@@ -256,15 +258,15 @@ export default function ExpenseTrackerDashboard() {
               {transactions.map((transaction) => (
                 <div key={transaction.id} className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-xl transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${transaction.color}`}>
-                      <transaction.icon className="w-6 h-6" />
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-gray-100 text-gray-600">
+                      $
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">{transaction.name}</p>
-                      <p className="text-sm text-gray-500">{transaction.category} • {transaction.date}</p>
+                      <p className="font-semibold text-gray-900">{transaction.title}</p>
+                      <p className="text-sm text-gray-500">{transaction.category} • {transaction.expenseDate}</p>
                     </div>
                   </div>
-                  <span className="text-lg font-bold text-red-600">{transaction.amount.toFixed(2)}</span>
+                  <span className="text-lg font-bold text-red-600">{Number(transaction.amount).toFixed(2)}</span>
                 </div>
               ))}
             </div>
