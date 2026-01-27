@@ -9,7 +9,7 @@ export default function ProfilePage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [userData, setUserData] = useState({
-    name: 'John Doe',
+    name: 'sonam',
     email: 'john.doe@example.com',
     phone: '+1 (555) 123-4567',
     location: 'San Francisco, CA',
@@ -86,7 +86,7 @@ export default function ProfilePage() {
   const leaderboard = [
     { rank: 1, name: 'Sarah Chen', score: 9850, avatar: 'SC', change: 0 },
     { rank: 2, name: 'Mike Johnson', score: 9520, avatar: 'MJ', change: 1 },
-    { rank: 3, name: 'You', score: 9200, avatar: 'JD', change: -1, isUser: true },
+    { rank: 3, name: 'You', score: 9200, avatar: 'OD', change: -1, isUser: true },
     { rank: 4, name: 'Emma Wilson', score: 8890, avatar: 'EW', change: 0 },
     { rank: 5, name: 'Alex Brown', score: 8640, avatar: 'AB', change: 2 }
   ];
@@ -127,7 +127,7 @@ export default function ProfilePage() {
               <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 rounded-xl p-2 transition-all">
                 <div className="relative">
                   <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white font-semibold ring-2 ring-emerald-200">
-                    JD
+                    OD
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
@@ -157,7 +157,7 @@ export default function ProfilePage() {
                 <div className="relative group">
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 rounded-full blur-xl opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
                   <div className="relative w-40 h-40 bg-white rounded-full flex items-center justify-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-emerald-600 to-teal-600 shadow-2xl ring-8 ring-white/50">
-                    JD
+                    OD
                   </div>
                   <button className="absolute bottom-2 right-2 w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform group">
                     <Camera className="w-6 h-6 text-white" />
