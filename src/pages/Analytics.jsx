@@ -122,7 +122,7 @@ export default function ExpenseTrackerAnalytics() {
               </button>
               <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 rounded-lg p-2">
                 <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white font-semibold">
-                  JD
+                  OD
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-600" />
               </div>
