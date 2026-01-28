@@ -36,6 +36,7 @@ function App() {
 
       <Routes>
         <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/admin" element={<AdminDashboard />} />
@@ -47,7 +48,7 @@ function App() {
         {/* Auth routes */}
         <Route path="/login" element={<Signin />} />
         <Route path="/signin" element={<Signin />} />
-        <Route path="/" element={<Register />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </Router>
