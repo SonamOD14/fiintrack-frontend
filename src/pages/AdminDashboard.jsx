@@ -58,7 +58,7 @@ const AdminDashboard = () => {
                 <td className="py-2 px-4 border border-gray-300">
                   {user.email}
                 </td>
-
+                
                 <td className="py-2 px-4 border border-gray-300">
                   {user.username}
                 </td>
