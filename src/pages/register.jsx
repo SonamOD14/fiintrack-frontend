@@ -112,14 +112,14 @@ export default function ExpenseTrackerSignup() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex gap-6 mt-16">
+          {/* <div className="flex gap-6 mt-16">
             <button className="px-8 py-3 bg-white text-emerald-600 rounded-xl font-semibold hover:bg-emerald-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
               CREATE HERE
             </button>
             <button className="px-8 py-3 bg-transparent border-2 border-white text-white rounded-xl font-semibold hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
               DISCOVER HERE
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
