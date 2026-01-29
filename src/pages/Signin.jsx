@@ -34,7 +34,7 @@ export default function ExpenseTrackerSignin() {
       const res = await loginUserApi(sendData);
 
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      // localStorage.setItem('user', JSON.stringify(res.data.user));
 
       toast.success(res.data.message, { id: toastId });
 
