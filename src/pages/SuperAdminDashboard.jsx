@@ -52,4 +52,32 @@ export default function SuperAdminDashboard() {
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+    if (!window.confirm('Delete this user?')) return;
+    
+    try {
+      await axios.delete(`${API_URL}/admin/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      setAllUsers(allUsers.filter(u => u.id !== userId));
+      alert('User deleted!');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to delete user');
+    }
+  };
+
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">
+      <div className="text-xl">Loading...</div>
+    </div>;
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Your UI code here - it will use the dynamic data */}
+      {/* stats, allUsers, etc. */}
+    </div>
+  );
 }
