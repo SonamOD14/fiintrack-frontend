@@ -1,14 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import Register from "./pages/register";
 import Footer from "./components/Footer";
 import Dashboard from "./pages/Dashboard";
 import Signin from "./pages/Signin";
 import ForgotPassword from "./pages/ForgetPassword";
 import Analytics from "./pages/Analytics";
-import AdminDashboard from "./pages/AdminDashboard";
 import TransactionsPage from "./pages/Transactions";
 import BudgetPage from "./pages/Budget";
 import ProfilePage from "./pages/Profile";
@@ -39,7 +38,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/analytics" element={<Analytics />} />
-          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/transactions" element={<TransactionsPage />} />
           <Route path="/budget" element={<BudgetPage />} />
           <Route path="/profile" element={<ProfilePage />} />
