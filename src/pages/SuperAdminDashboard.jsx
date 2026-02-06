@@ -75,9 +75,55 @@ export default function SuperAdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Your UI code here - it will use the dynamic data */}
-      {/* stats, allUsers, etc. */}
+    <div className="min-h-screen bg-gray-50 p-6">
+      <h1 className="text-2xl font-bold mb-4">Super Admin Dashboard</h1>
+  
+      {/* Stats Section */}
+      {stats && (
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold">Stats</h2>
+          <p>Total Users: {stats.totalUsers}</p>
+          <p>Active Users: {stats.activeUsers}</p>
+          {/* Add more stats fields depending on your API */}
+        </div>
+      )}
+  
+      {/* Users Section */}
+      <div>
+        <h2 className="text-xl font-semibold mb-2">All Users</h2>
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr>
+              <th className="px-4 py-2 border">Name</th>
+              <th className="px-4 py-2 border">Email</th>
+              <th className="px-4 py-2 border">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allUsers.map(user => (
+              <tr key={user.id}>
+                <td className="px-4 py-2 border">{user.name}</td>
+                <td className="px-4 py-2 border">{user.email}</td>
+                <td className="px-4 py-2 border">
+                  <button
+                    onClick={() => handleBanUser(user.id)}
+                    className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+                  >
+                    Ban
+                  </button>
+                  <button
+                    onClick={() => handleDeleteUser(user.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
+  
 }
