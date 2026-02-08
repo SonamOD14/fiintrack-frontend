@@ -21,21 +21,16 @@ export const isTokenExpired = (token) => {
         return decoded.exp < currentTime;
 
     } catch (e) {
-
         return true;
-
     }
-
 };
 
 export const getUserRole = () => {
-
     const token = getToken();
     if (!token || isTokenExpired(token)) {
         localStorage.removeItem("token");
         return null;
     }
-
     try {
 
         const decoded = jwtDecode(token);
