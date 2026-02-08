@@ -4,6 +4,8 @@ import { Wallet, TrendingUp, Home, Menu, Bell, User, ChevronDown, Search, Filter
 export default function TransactionsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -104,6 +106,48 @@ export default function TransactionsPage() {
     
     setShowAddModal(false);
     alert('Transaction added successfully!');
+  };
+
+  const handleDeleteTransaction = (id) => {
+    if (!window.confirm('Delete this transaction?')) return;
+    setTransactions(transactions.filter(t => t.id !== id));
+  };
+
+  const handleEditTransaction = (transaction) => {
+    setEditingTransaction(transaction);
+    setNewTransaction({
+      name: transaction.name,
+      merchant: transaction.merchant,
+      category: transaction.category,
+      amount: Math.abs(transaction.amount),
+      type: transaction.type,
+      date: transaction.date,
+      time: transaction.time,
+      description: transaction.description,
+      status: transaction.status
+    });
+    setShowAddModal(true);
+  };
+
+  const handleUpdateTransaction = () => {
+    setTransactions(transactions.map(t =>
+      t.id === editingTransaction.id
+        ? {
+            ...t,
+            ...newTransaction,
+            amount: newTransaction.type === 'expense'
+              ? -Math.abs(parseFloat(newTransaction.amount))
+              : Math.abs(parseFloat(newTransaction.amount))
+          }
+        : t
+    ));
+    setEditingTransaction(null);
+    setShowAddModal(false);
+  };
+
+  const handleViewTransaction = (transaction) => {
+    setEditingTransaction(transaction);
+    setShowViewModal(true);
   };
 
   const filteredTransactions = transactions.filter(t => {
@@ -331,13 +375,13 @@ export default function TransactionsPage() {
                         </td>
                         <td className="py-4 px-6">
                           <div className="flex items-center justify-center gap-2">
-                            <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+                            <button onClick={()=>handleViewTransaction(transaction)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
                               <Eye className="w-4 h-4" />
                             </button>
-                            <button className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all">
+                            <button onClick={()=>handleEditTransaction(transaction)} className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all">
                               <Edit className="w-4 h-4" />
                             </button>
-                            <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all">
+                            <button onClick={()=>handleDeleteTransaction(transaction.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all">
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
@@ -565,7 +609,7 @@ export default function TransactionsPage() {
                   Cancel
                 </button>
                 <button
-                  onClick={handleAddTransaction}
+                  onClick={editingTransaction ? handleUpdateTransaction : handleAddTransaction}
                   className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all"
                 >
                   Add Transaction
@@ -575,6 +619,24 @@ export default function TransactionsPage() {
           </div>
         </div>
       )}
+    {/* View Transaction Modal */}
+    {showViewModal && editingTransaction && (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-2xl p-6 w-full max-w-md">
+          <h3 className="text-xl font-bold mb-4">Transaction Details</h3>
+          <p><strong>Name:</strong> {editingTransaction.name}</p>
+          <p><strong>Merchant:</strong> {editingTransaction.merchant}</p>
+          <p><strong>Category:</strong> {editingTransaction.category}</p>
+          <p><strong>Amount:</strong> ${Math.abs(editingTransaction.amount)}</p>
+          <p><strong>Date:</strong> {editingTransaction.date}</p>
+          <p><strong>Time:</strong> {editingTransaction.time}</p>
+          <p><strong>Status:</strong> {editingTransaction.status}</p>
+          <div className="flex justify-end mt-4">
+            <button onClick={()=>setShowViewModal(false)} className="px-4 py-2 bg-gray-100 rounded-lg">Close</button>
+          </div>
+        </div>
+      </div>
+    )}
     </div>
   );
 }
