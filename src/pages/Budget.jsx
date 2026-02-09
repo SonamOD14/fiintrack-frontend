@@ -6,6 +6,7 @@ export default function BudgetPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('monthly');
+  const [formData, setFormData] = useState({ id: null, category: '', amount: '' });
 
   const [budgets, setBudgets] = useState([
     { 
@@ -114,6 +115,51 @@ export default function BudgetPage() {
     }
   ]);
 
+  const handleAddBudget = () => {
+    setShowAddModal(true);
+  };
+
+  const handleDeleteBudget = (id) => {
+    setBudgets(prev => prev.filter(b => b.id !== id));
+  };
+
+  const handleSubmitBudget = () => {
+    if (!formData.category || !formData.amount) return;
+
+    if (formData.id) {
+      setBudgets(prev => prev.map(b =>
+        b.id === formData.id
+          ? { ...b, category: formData.category, budget: parseFloat(formData.amount), remaining: parseFloat(formData.amount) - b.spent }
+          : b
+      ));
+    } else {
+      const newBudget = {
+        id: Date.now(),
+        category: formData.category,
+        icon: Target,
+        color: 'bg-gray-500',
+        budget: parseFloat(formData.amount),
+        spent: 0,
+        remaining: parseFloat(formData.amount),
+        transactions: 0,
+        trend: 'stable',
+        lastMonth: 0,
+        status: 'good'
+      };
+      setBudgets(prev => [...prev, newBudget]);
+    }
+
+    setFormData({ id: null, category: '', amount: '' });
+    setShowAddModal(false);
+  };
+
+  const handleEditBudget = (id) => {
+    const budgetToEdit = budgets.find(b => b.id === id);
+    if (!budgetToEdit) return;
+    setFormData({ id: budgetToEdit.id, category: budgetToEdit.category, amount: budgetToEdit.budget });
+    setShowAddModal(true);
+  };
+
   const totalBudget = budgets.reduce((sum, b) => sum + b.budget, 0);
   const totalSpent = budgets.reduce((sum, b) => sum + b.spent, 0);
   const totalRemaining = budgets.reduce((sum, b) => sum + b.remaining, 0);
@@ -180,7 +226,7 @@ export default function BudgetPage() {
 
             <div className="flex items-center gap-4">
               <button 
-                onClick={() => setShowAddModal(true)}
+                onClick={handleAddBudget}
                 className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all transform hover:scale-105 shadow-lg"
               >
                 <Plus className="w-5 h-5" />
@@ -394,10 +440,10 @@ export default function BudgetPage() {
                         </span>
                       </div>
                       <div className="flex gap-1">
-                        <button className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all">
+                        <button onClick={() => handleEditBudget(budget.id)} className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all">
                           <Edit className="w-4 h-4" />
                         </button>
-                        <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all">
+                        <button onClick={() => handleDeleteBudget(budget.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -436,6 +482,50 @@ export default function BudgetPage() {
           </div>
         </main>
       </div>
+      {/* Modal for Add/Edit Budget */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl">
+            <h2 className="text-xl font-bold mb-4">{formData.id ? 'Edit Budget' : 'Add Budget'}</h2>
+
+            <div className="space-y-4">
+              <input
+                type="text"
+                placeholder="Category Name"
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                className="w-full border border-gray-300 rounded-lg p-3"
+              />
+
+              <input
+                type="number"
+                placeholder="Budget Amount"
+                value={formData.amount}
+                onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                className="w-full border border-gray-300 rounded-lg p-3"
+              />
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowAddModal(false);
+                  setFormData({ id: null, category: '', amount: '' });
+                }}
+                className="px-4 py-2 bg-gray-200 rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmitBudget}
+                className="px-4 py-2 bg-emerald-600 text-white rounded-lg"
+              >
+                {formData.id ? 'Update' : 'Add'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )} 
     </div>
   );
 }
