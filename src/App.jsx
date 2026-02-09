@@ -12,6 +12,7 @@ import TransactionsPage from "./pages/Transactions";
 import BudgetPage from "./pages/Budget";
 import ProfilePage from "./pages/Profile";
 import Sidebar from "./components/Sidebar";
+import SuperAdminDashboard from "./pages/Superadmindashboard";
 
 function Layout() {
   const location = useLocation();
@@ -41,6 +42,7 @@ function App() {
           <Route path="/transactions" element={<TransactionsPage />} />
           <Route path="/budget" element={<BudgetPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/superadmin" element={<SuperAdminDashboard />} />
         </Route>
 
         {/* Auth routes */}
