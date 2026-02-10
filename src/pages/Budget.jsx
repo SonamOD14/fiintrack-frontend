@@ -1,12 +1,56 @@
-import React, { useState } from 'react';
-import { Wallet, TrendingUp, Home, Menu, Bell, User, ChevronDown, Plus, Edit, Trash2, Target, AlertCircle, CheckCircle, TrendingDown, DollarSign, Calendar, ShoppingCart, Utensils, Car, Film, Heart, ShoppingBag, Coffee, Zap, CreditCard, Flame, Award, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Wallet, TrendingUp, Home, Menu, Bell, User, ChevronDown, Plus, Edit, Trash2, Target, AlertCircle, CheckCircle, TrendingDown, DollarSign, Calendar, ShoppingCart, Utensils, Car, Film, Heart, ShoppingBag, Coffee, Zap, CreditCard, Flame, Award, ArrowUpCircle, ArrowDownCircle, X } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, Line, RadialBarChart, RadialBar } from 'recharts';
 
 export default function BudgetPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('monthly');
   const [formData, setFormData] = useState({ id: null, category: '', amount: '' });
+
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      type: 'warning',
+      title: 'Budget Alert',
+      message: 'Entertainment spending is over budget by $20',
+      time: '2 hours ago',
+      read: false,
+      icon: AlertCircle,
+      color: 'text-yellow-600'
+    },
+    {
+      id: 2,
+      type: 'success',
+      title: 'Goal Achieved',
+      message: 'You saved $585 this month!',
+      time: '5 hours ago',
+      read: false,
+      icon: CheckCircle,
+      color: 'text-green-600'
+    },
+    {
+      id: 3,
+      type: 'danger',
+      title: 'Over Budget',
+      message: 'Shopping category at 94% of budget',
+      time: '1 day ago',
+      read: true,
+      icon: AlertCircle,
+      color: 'text-red-600'
+    },
+    {
+      id: 4,
+      type: 'info',
+      title: 'Monthly Report',
+      message: 'Your monthly budget report is ready',
+      time: '2 days ago',
+      read: true,
+      icon: Target,
+      color: 'text-blue-600'
+    }
+  ]);
 
   const [budgets, setBudgets] = useState([
     { 
@@ -115,6 +159,18 @@ export default function BudgetPage() {
     }
   ]);
 
+  // Close notification dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.notification-menu')) {
+        setShowNotifications(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const handleAddBudget = () => {
     setShowAddModal(true);
   };
@@ -160,10 +216,29 @@ export default function BudgetPage() {
     setShowAddModal(true);
   };
 
+  const markNotificationAsRead = (id) => {
+    setNotifications(prev => prev.map(n => 
+      n.id === id ? { ...n, read: true } : n
+    ));
+  };
+
+  const deleteNotification = (id) => {
+    setNotifications(prev => prev.filter(n => n.id !== id));
+  };
+
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
+
+  const clearAllNotifications = () => {
+    setNotifications([]);
+  };
+
   const totalBudget = budgets.reduce((sum, b) => sum + b.budget, 0);
   const totalSpent = budgets.reduce((sum, b) => sum + b.spent, 0);
   const totalRemaining = budgets.reduce((sum, b) => sum + b.remaining, 0);
   const percentageUsed = ((totalSpent / totalBudget) * 100).toFixed(1);
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   const getStatusColor = (status) => {
     switch(status) {
@@ -219,7 +294,7 @@ export default function BudgetPage() {
                 <Menu className="w-6 h-6" />
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Budget Management</h1>
+                <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-700">Budget Management</h1>
                 <p className="text-sm text-gray-500">Plan and track your spending limits</p>
               </div>
             </div>
@@ -232,10 +307,93 @@ export default function BudgetPage() {
                 <Plus className="w-5 h-5" />
                 Add Budget
               </button>
-              <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                <Bell className="w-6 h-6" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
+              
+              {/* Notification Bell - WORKING */}
+              <div className="relative notification-menu">
+                <button 
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+                >
+                  <Bell className="w-6 h-6" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-1 right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-bold">
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>
+
+                {/* Notification Dropdown */}
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+                    <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gradient-to-r from-emerald-50 to-teal-50">
+                      <div>
+                        <h3 className="font-bold text-gray-900">Notifications</h3>
+                        <p className="text-xs text-gray-500">{unreadCount} unread</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={markAllAsRead}
+                          className="text-xs text-emerald-600 hover:text-emerald-700 font-semibold"
+                        >
+                          Mark all read
+                        </button>
+                        <button 
+                          onClick={clearAllNotifications}
+                          className="text-xs text-red-600 hover:text-red-700 font-semibold"
+                        >
+                          Clear all
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="max-h-96 overflow-y-auto">
+                      {notifications.length === 0 ? (
+                        <div className="p-8 text-center">
+                          <Bell className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                          <p className="text-gray-500">No notifications</p>
+                        </div>
+                      ) : (
+                        notifications.map((notification) => (
+                          <div 
+                            key={notification.id}
+                            className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-all ${!notification.read ? 'bg-blue-50' : ''}`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${notification.read ? 'bg-gray-100' : 'bg-white'}`}>
+                                <notification.icon className={`w-5 h-5 ${notification.color}`} />
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-start justify-between">
+                                  <h4 className="font-semibold text-gray-900 text-sm">{notification.title}</h4>
+                                  <button 
+                                    onClick={() => deleteNotification(notification.id)}
+                                    className="text-gray-400 hover:text-red-600"
+                                  >
+                                    <X className="w-4 h-4" />
+                                  </button>
+                                </div>
+                                <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                                <div className="flex items-center justify-between mt-2">
+                                  <span className="text-xs text-gray-400">{notification.time}</span>
+                                  {!notification.read && (
+                                    <button 
+                                      onClick={() => markNotificationAsRead(notification.id)}
+                                      className="text-xs text-emerald-600 hover:text-emerald-700 font-semibold"
+                                    >
+                                      Mark as read
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 rounded-lg p-2">
                 <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white font-semibold">
                   OD
@@ -371,7 +529,7 @@ export default function BudgetPage() {
             </div>
           </div>
 
-          Budget Categories Grid
+          {/* Budget Categories Grid */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -425,7 +583,7 @@ export default function BudgetPage() {
                       </div>
                     </div>
 
-                    Trend Indicator
+                    {/* Trend Indicator */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                       <div className="flex items-center gap-2">
                         {budget.trend === 'up' ? (
