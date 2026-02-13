@@ -1,385 +1,156 @@
-import React, { useState } from 'react';
-import { Wallet, TrendingUp, TrendingDown, DollarSign, CreditCard, ShoppingCart, Home, Utensils, Car, Film, Heart, ShoppingBag, Menu, Bell, User, Search, ChevronDown, Calendar, ArrowUp, ArrowDown, Download, Filter, BarChart3 } from 'lucide-react';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, Legend } from 'recharts';
+import React, { useState, useEffect } from 'react';
+import { 
+  TrendingUp, TrendingDown, DollarSign, ShoppingCart, 
+  Menu, Bell, ChevronDown, Download, BarChart3, 
+  PieChart as PieIcon, Target, Activity 
+} from 'lucide-react';
+import { 
+  Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, 
+  ResponsiveContainer, LineChart, Line, XAxis, YAxis, 
+  CartesianGrid, Tooltip, BarChart, Bar, PieChart, Pie, 
+  Cell, AreaChart, Area, Legend 
+} from 'recharts';
 
 export default function ExpenseTrackerAnalytics() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [timeRange, setTimeRange] = useState('month');
-
-  // Monthly comparison data
-  const comparisonData = [
-    { month: 'Jan', income: 8500, expenses: 3200, savings: 5300 },
-    { month: 'Feb', income: 8800, expenses: 2800, savings: 6000 },
-    { month: 'Mar', income: 9200, expenses: 3500, savings: 5700 },
-    { month: 'Apr', income: 8700, expenses: 3200, savings: 5500 },
-    { month: 'May', income: 9500, expenses: 2900, savings: 6600 },
-    { month: 'Jun', income: 9000, expenses: 3300, savings: 5700 }
-  ];
-
-  // Category spending over time
-  const categoryTrendData = [
-    { month: 'Jan', food: 850, transport: 420, shopping: 680, entertainment: 320, bills: 750 },
-    { month: 'Feb', food: 780, transport: 380, shopping: 590, entertainment: 280, bills: 770 },
-    { month: 'Mar', food: 920, transport: 450, shopping: 720, entertainment: 380, bills: 730 },
-    { month: 'Apr', food: 880, transport: 410, shopping: 680, entertainment: 340, bills: 790 },
-    { month: 'May', food: 860, transport: 390, shopping: 650, entertainment: 300, bills: 700 },
-    { month: 'Jun', food: 850, transport: 420, shopping: 680, entertainment: 320, bills: 750 }
-  ];
-
-  // Weekly spending pattern
-  const weeklyData = [
-    { day: 'Mon', amount: 120 },
-    { day: 'Tue', amount: 85 },
-    { day: 'Wed', amount: 145 },
-    { day: 'Thu', amount: 98 },
-    { day: 'Fri', amount: 210 },
-    { day: 'Sat', amount: 275 },
-    { day: 'Sun', amount: 190 }
-  ];
-
-  // Expense by time of day
-  const timeOfDayData = [
-    { time: '6AM', amount: 45 },
-    { time: '9AM', amount: 120 },
-    { time: '12PM', amount: 280 },
-    { time: '3PM', amount: 95 },
-    { time: '6PM', amount: 320 },
-    { time: '9PM', amount: 180 },
-    { time: '12AM', amount: 35 }
-  ];
-
-  // Budget vs Actual
-  const budgetData = [
-    { category: 'Food', budget: 1000, actual: 850, color: '#10b981' },
-    { category: 'Transport', budget: 500, actual: 420, color: '#3b82f6' },
-    { category: 'Shopping', budget: 800, actual: 680, color: '#f59e0b' },
-    { category: 'Entertainment', budget: 400, actual: 320, color: '#ef4444' },
-    { category: 'Bills', budget: 800, actual: 750, color: '#06b6d4' }
-  ];
-
-  // Top spending merchants
-  const topMerchants = [
-    { name: 'Amazon', amount: 450, transactions: 12, icon: ShoppingBag, color: 'bg-orange-100 text-orange-600' },
-    { name: 'Whole Foods', amount: 380, transactions: 8, icon: ShoppingCart, color: 'bg-green-100 text-green-600' },
-    { name: 'Uber', amount: 280, transactions: 15, icon: Car, color: 'bg-blue-100 text-blue-600' },
-    { name: 'Restaurants', amount: 520, transactions: 10, icon: Utensils, color: 'bg-red-100 text-red-600' },
-    { name: 'Netflix', amount: 45, transactions: 3, icon: Film, color: 'bg-purple-100 text-purple-600' }
-  ];
-
-  // Insights data
-  const insights = [
-    {
-      type: 'success',
-      title: 'Great Progress!',
-      description: 'You spent 15% less on shopping this month',
-      icon: TrendingDown,
-      color: 'bg-green-100 text-green-600'
-    },
-    {
-      type: 'warning',
-      title: 'Watch Out',
-      description: 'Food expenses are 20% higher than last month',
-      icon: TrendingUp,
-      color: 'bg-orange-100 text-orange-600'
-    },
-    {
-      type: 'info',
-      title: 'Savings Goal',
-      description: 'You\'re on track to save $6,000 this month',
-      icon: DollarSign,
-      color: 'bg-blue-100 text-blue-600'
-    }
-  ];
+  const [timeRange, setTimeRange] = useState("6months");
+  
+  // Combine all data into a cohesive state
+  const [data] = useState({
+    // From Dashboard
+    radarData: [
+      { category: 'Food', amount: 850 },
+      { category: 'Transport', amount: 420 },
+      { category: 'Shopping', amount: 680 },
+      { category: 'Entertainment', amount: 320 },
+      { category: 'Healthcare', amount: 280 },
+      { category: 'Bills', amount: 750 }
+    ],
+    pieData: [
+      { name: 'Food', value: 850, color: '#10b981' },
+      { name: 'Transport', value: 420, color: '#3b82f6' },
+      { name: 'Shopping', value: 680, color: '#f59e0b' },
+      { name: 'Entertainment', value: 320, color: '#ef4444' },
+      { name: 'Healthcare', value: 280, color: '#8b5cf6' },
+      { name: 'Bills', value: 750, color: '#06b6d4' }
+    ],
+    // From Analytics
+    comparisonData: [
+      { month: 'Jan', income: 8500, expenses: 3200, savings: 5300 },
+      { month: 'Feb', income: 8800, expenses: 2800, savings: 6000 },
+      { month: 'Mar', income: 9200, expenses: 3500, savings: 5700 },
+      { month: 'Apr', income: 8700, expenses: 3200, savings: 5500 },
+      { month: 'May', income: 9500, expenses: 2900, savings: 6600 },
+      { month: 'Jun', income: 9000, expenses: 3300, savings: 5700 }
+    ],
+    budgetData: [
+      { category: 'Food', budget: 1000, actual: 850 },
+      { category: 'Transport', budget: 500, actual: 420 },
+      { category: 'Shopping', budget: 800, actual: 680 },
+      { category: 'Bills', budget: 800, actual: 750 }
+    ]
+  });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Sidebar */}
-
-
-      {/* Main Content */}
+    <div className="min-h-screen bg-[#F8FAFC]">
       <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
-        {/* Header */}
-        <header className="bg-white shadow-sm sticky top-0 z-40">
-          <div className="flex items-center justify-between p-6">
+        {/* Modern Glass Header */}
+        <header className="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-100 p-6">
+          <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
-              <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-gray-600 hover:text-gray-900">
-                <Menu className="w-6 h-6" />
+              <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <Menu className="w-5 h-5 text-gray-600" />
               </button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
-                <p className="text-sm text-gray-500">Deep insights into your spending</p>
-              </div>
+              <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-700">
+                Analytics
+              </h1>
             </div>
-
-            <div className="flex items-center gap-4">
-              <button className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
-                <Download className="w-4 h-4" />
-                Export Report
-              </button>
-              <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                <Bell className="w-6 h-6" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
-              <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 rounded-lg p-2">
-                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white font-semibold">
-                  OD
-                </div>
-                <ChevronDown className="w-4 h-4 text-gray-600" />
-              </div>
-            </div>
+            <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-xl hover:from-emerald-700 hover:to-teal-800 transition-all shadow-sm">
+              <Download className="w-4 h-4" />
+              Export Report
+            </button>
           </div>
         </header>
 
-        {/* Analytics Content */}
-        <main className="p-6 space-y-6">
-          {/* Time Range Filter */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
-                <Calendar className="w-4 h-4 text-gray-600" />
-                <span className="text-sm font-medium text-gray-700">Last 6 Months</span>
-                <ChevronDown className="w-4 h-4 text-gray-600" />
-              </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
-                <Filter className="w-4 h-4 text-gray-600" />
-                <span className="text-sm font-medium text-gray-700">All Categories</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Key Metrics */}
+        <main className="p-8 space-y-8">
+          {/* Section 1: Top Level Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-medium opacity-90">Average Monthly Expense</h3>
-                <ArrowDown className="w-5 h-5 opacity-75" />
-              </div>
-              <p className="text-4xl font-bold mb-2">$3,150</p>
-              <p className="text-sm opacity-75">5.2% lower than last period</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-medium opacity-90">Highest Spending Day</h3>
-                <BarChart3 className="w-5 h-5 opacity-75" />
-              </div>
-              <p className="text-4xl font-bold mb-2">Saturday</p>
-              <p className="text-sm opacity-75">Average $275 per Saturday</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-6 text-white shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-medium opacity-90">Savings Rate</h3>
-                <ArrowUp className="w-5 h-5 opacity-75" />
-              </div>
-              <p className="text-4xl font-bold mb-2">63%</p>
-              <p className="text-sm opacity-75">Above your 60% target</p>
-            </div>
+            <MetricCard title="Avg Monthly Spend" value="$3,150" trend="-5.2%" icon={<Activity />} color="emerald" />
+            <MetricCard title="Savings Rate" value="63%" trend="+2.1%" icon={<Target />} color="blue" />
+            <MetricCard title="Peak Spending" value="Saturday" sub="Avg $275" icon={<BarChart3 />} color="purple" />
           </div>
 
-          {/* Income vs Expenses vs Savings */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Income vs Expenses vs Savings</h2>
-              <p className="text-sm text-gray-500">Monthly financial overview</p>
+          {/* Section 2: The Big Picture (Income vs Expense) */}
+          <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+            <div className="mb-8">
+              <h2 className="text-xl font-bold text-gray-900">Cash Flow Overview</h2>
+              <p className="text-gray-500">Income, Expenses, and Net Savings trend</p>
             </div>
-            <div className="h-80">
+            <div className="h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={comparisonData}>
+                <AreaChart data={data.comparisonData}>
                   <defs>
-                    <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorExpenses" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorSavings" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    <linearGradient id="colorInc" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="month" tick={{ fill: '#6b7280' }} />
-                  <YAxis tick={{ fill: '#6b7280' }} />
-                  <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
-                  <Legend />
-                  <Area type="monotone" dataKey="income" stroke="#10b981" fillOpacity={1} fill="url(#colorIncome)" />
-                  <Area type="monotone" dataKey="expenses" stroke="#ef4444" fillOpacity={1} fill="url(#colorExpenses)" />
-                  <Area type="monotone" dataKey="savings" stroke="#3b82f6" fillOpacity={1} fill="url(#colorSavings)" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#94A3B8'}} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: '#94A3B8'}} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Area type="monotone" dataKey="income" stroke="#10b981" strokeWidth={3} fill="url(#colorInc)" />
+                  <Area type="monotone" dataKey="expenses" stroke="#EF4444" strokeWidth={3} fill="transparent" />
+                  <Area type="monotone" dataKey="savings" stroke="#3B82F6" strokeWidth={3} fill="transparent" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          {/* Category Trends & Budget vs Actual */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Category Spending Trends */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Category Trends</h2>
-                <p className="text-sm text-gray-500">Spending by category over time</p>
-              </div>
-              <div className="h-80">
+          {/* Section 3: Bento Grid for Analysis Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Radar Chart (From Dashboard) - Takes 1 column */}
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col items-center">
+              <h3 className="text-lg font-bold mb-4 self-start">Spending DNA</h3>
+              <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={categoryTrendData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 12 }} />
-                    <YAxis tick={{ fill: '#6b7280', fontSize: 12 }} />
-                    <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
-                    <Legend />
-                    <Line type="monotone" dataKey="food" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} />
-                    <Line type="monotone" dataKey="transport" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} />
-                    <Line type="monotone" dataKey="shopping" stroke="#f59e0b" strokeWidth={2} dot={{ r: 4 }} />
-                    <Line type="monotone" dataKey="entertainment" stroke="#ef4444" strokeWidth={2} dot={{ r: 4 }} />
-                    <Line type="monotone" dataKey="bills" stroke="#06b6d4" strokeWidth={2} dot={{ r: 4 }} />
-                  </LineChart>
+                  <RadarChart data={data.radarData}>
+                    <PolarGrid stroke="#E2E8F0" />
+                    <PolarAngleAxis dataKey="category" tick={{ fill: '#64748B', fontSize: 10 }} />
+                    <Radar dataKey="amount" stroke="#10b981" fill="#10b981" fillOpacity={0.5} />
+                  </RadarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Budget vs Actual */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Budget vs Actual</h2>
-                <p className="text-sm text-gray-500">How you're tracking against budget</p>
-              </div>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={budgetData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="category" tick={{ fill: '#6b7280', fontSize: 12 }} />
-                    <YAxis tick={{ fill: '#6b7280', fontSize: 12 }} />
-                    <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
-                    <Legend />
-                    <Bar dataKey="budget" fill="#d1d5db" radius={[8, 8, 0, 0]} />
-                    <Bar dataKey="actual" fill="#10b981" radius={[8, 8, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="mt-4 space-y-2">
-                {budgetData.map((item, index) => {
-                  const percentage = ((item.actual / item.budget) * 100).toFixed(0);
-                  const isOverBudget = item.actual > item.budget;
-                  return (
-                    <div key={index} className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">{item.category}</span>
-                      <span className={`text-sm font-semibold ${isOverBudget ? 'text-red-600' : 'text-green-600'}`}>
-                        {percentage}% {isOverBudget ? '(Over)' : '(Under)'}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Weekly Pattern & Time of Day */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Weekly Spending Pattern */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Weekly Spending Pattern</h2>
-                <p className="text-sm text-gray-500">Average spending by day of week</p>
-              </div>
+            {/* Pie Chart (From Dashboard) - Takes 1 column */}
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+              <h3 className="text-lg font-bold mb-4">Allocation</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={weeklyData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="day" tick={{ fill: '#6b7280' }} />
-                    <YAxis tick={{ fill: '#6b7280' }} />
-                    <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
-                    <Bar dataKey="amount" fill="#10b981" radius={[8, 8, 0, 0]} />
-                  </BarChart>
+                  <PieChart>
+                    <Pie data={data.pieData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
+                      {data.pieData.map((entry, index) => <Cell key={index} fill={entry.color} />)}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Time of Day Spending */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Spending by Time of Day</h2>
-                <p className="text-sm text-gray-500">When you spend the most</p>
-              </div>
+            {/* Budget vs Actual (Original) - Takes 1 column */}
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+              <h3 className="text-lg font-bold mb-4">Budget Precision</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={timeOfDayData}>
-                    <defs>
-                      <linearGradient id="colorTime" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="time" tick={{ fill: '#6b7280' }} />
-                    <YAxis tick={{ fill: '#6b7280' }} />
-                    <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
-                    <Area type="monotone" dataKey="amount" stroke="#3b82f6" fillOpacity={1} fill="url(#colorTime)" />
-                  </AreaChart>
+                  <BarChart data={data.budgetData} layout="vertical">
+                    <XAxis type="number" hide />
+                    <YAxis dataKey="category" type="category" axisLine={false} tickLine={false} width={80} />
+                    <Tooltip />
+                    <Bar dataKey="budget" fill="#E2E8F0" radius={[0, 4, 4, 0]} barSize={10} />
+                    <Bar dataKey="actual" fill="#10b981" radius={[0, 4, 4, 0]} barSize={10} />
+                  </BarChart>
                 </ResponsiveContainer>
-              </div>
-            </div>
-          </div>
-
-          {/* Top Merchants & Insights */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Top Merchants */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Top Spending Merchants</h2>
-                <p className="text-sm text-gray-500">Where your money goes</p>
-              </div>
-              <div className="space-y-4">
-                {topMerchants.map((merchant, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-xl transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${merchant.color}`}>
-                        <merchant.icon className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-900">{merchant.name}</p>
-                        <p className="text-sm text-gray-500">{merchant.transactions} transactions</p>
-                      </div>
-                    </div>
-                    <span className="text-lg font-bold text-gray-900">${merchant.amount}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Smart Insights */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Smart Insights</h2>
-                <p className="text-sm text-gray-500">AI-powered spending analysis</p>
-              </div>
-              <div className="space-y-4">
-                {insights.map((insight, index) => (
-                  <div key={index} className="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                    <div className="flex items-start gap-4">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${insight.color} flex-shrink-0`}>
-                        <insight.icon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">{insight.title}</h3>
-                        <p className="text-sm text-gray-600">{insight.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-emerald-500 text-white flex-shrink-0">
-                      <TrendingDown className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">Recommendation</h3>
-                      <p className="text-sm text-gray-600">Consider reducing weekend spending to reach your savings goal faster. You could save an additional $400/month.</p>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -389,5 +160,37 @@ export default function ExpenseTrackerAnalytics() {
   );
 }
 
+// Sub-components for cleaner code
+function MetricCard({ title, value, trend, icon, color }) {
+  const colors = {
+    emerald: "bg-emerald-50 text-emerald-600",
+    blue: "bg-blue-50 text-blue-600",
+    purple: "bg-purple-50 text-purple-600"
+  };
+  return (
+    <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+      <div className="flex justify-between items-start mb-4">
+        <div className={`p-3 rounded-2xl ${colors[color]}`}>{icon}</div>
+        <span className="text-xs font-bold px-2 py-1 bg-gray-50 rounded-lg text-gray-500">{trend}</span>
+      </div>
+      <p className="text-sm text-gray-500 font-medium">{title}</p>
+      <p className="text-2xl font-bold text-gray-900">{value}</p>
+    </div>
+  );
+}
 
-
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white p-4 shadow-xl border border-gray-50 rounded-2xl">
+        <p className="font-bold text-gray-900 mb-2">{label}</p>
+        {payload.map((entry, i) => (
+          <p key={i} className="text-sm" style={{ color: entry.color }}>
+            {entry.name}: ${entry.value}
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
