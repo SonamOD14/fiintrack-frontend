@@ -8,7 +8,6 @@ import Dashboard from "./pages/Dashboard";
 import Signin from "./pages/Signin";
 import ForgotPassword from "./pages/ForgetPassword";
 import Analytics from "./pages/Analytics";
-import TransactionsPage from "./pages/Transactions";
 import BudgetPage from "./pages/Budget";
 import ProfilePage from "./pages/Profile";
 import Sidebar from "./components/Sidebar";
@@ -39,7 +38,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/analytics" element={<Analytics />} />
-          <Route path="/transactions" element={<TransactionsPage />} />
           <Route path="/budget" element={<BudgetPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/superadmin" element={<SuperAdminDashboard />} />
