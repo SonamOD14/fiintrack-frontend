@@ -17,15 +17,28 @@ const Api = axios.create({
   },
 });
 
-const config = {
+const getConfig = () => ({
   headers: {
-    'authorization': `Bearer ${localStorage.getItem('token')}`
+    Authorization: `Bearer ${localStorage.getItem('token')}`
   }
-}
+});
 
-
+// ===========auth=========
 export const createUserApi = (data) => Api.post("/api/user/register", data);
 export const loginUserApi = (data) => Api.post("/api/user/login", data);
-export const getallUsersApi = () => Api.get("/api/user/all-users", config);
 export const forgetPasswordApi = (data) => Api.post("/api/user/forgetPassword", data);
 export const resetPasswordApi = (data) => Api.post("/api/user/reset-password", data);
+
+
+export const getallUsersApi = () => Api.get("/api/user/getalluser", config);
+export const saveTransaction = (data) =>
+  Api.post("/api/transaction/", data, getConfig());
+
+export const getAllTransactions = () =>
+  Api.get("/api/transaction/get-all", getConfig());
+
+export const deleteTransaction = (id) =>
+  Api.delete(`/api/transaction/${id}`, getConfig());
+
+export const updateTransaction = (id, data) =>
+  Api.put(`/api/transaction/${id}`, data, getConfig());
