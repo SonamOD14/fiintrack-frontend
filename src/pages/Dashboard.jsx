@@ -89,7 +89,7 @@ export default function ExpenseTrackerDashboard() {
       errors.name = 'Transaction name is required';
     }
 
-    if (!formData.amount || parseFloat(formData.amount) <= 0) {git DollarSign
+    if (!formData.amount || parseFloat(formData.amount) <= 0) {
       errors.amount = 'Please enter a valid amount';
     }
 
