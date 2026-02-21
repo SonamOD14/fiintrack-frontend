@@ -94,7 +94,7 @@ export default function ExpenseTrackerDashboard() {
     }
 
     if (!formData.date) {
-      errors.date = 'Date is required';
+      errors.date = 'Date is required';gi
     }
 
     setFormErrors(errors);
